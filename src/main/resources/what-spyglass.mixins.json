@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "net.tim_m.what_spyglass.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"SpyglassUseMixin",
+		"SpyglassStopMixin",
+		"SpyglassRenderMixin",
+		"FovRenderMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

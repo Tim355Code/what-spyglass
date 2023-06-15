@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "what-spyglass",
+	"version": "${version}",
+	"name": "What Spyglass",
+	"description": "Adds the funny meme when you use the spyglass.",
+	"authors": [
+		"Tim_M"
+	],
+	"license": "GPL-3.0",
+	"icon": "assets/what-spyglass/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"net.tim_m.what_spyglass.WhatSpyglass"
+		]
+	},
+	"mixins": [
+		"what-spyglass.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "1.20.x",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
