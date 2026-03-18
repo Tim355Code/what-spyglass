@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SpyglassItem.class)
 public class SpyglassUseMixin
 {
-    @Inject(method="use", at = @At("HEAD"))
+    @Inject(method="use", at = @At("HEAD"), cancellable = true)
     private void use(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> info)
     {
         ActionResult result = SpyglassUseCallback.EVENT.invoker().interact(world, user, hand);
