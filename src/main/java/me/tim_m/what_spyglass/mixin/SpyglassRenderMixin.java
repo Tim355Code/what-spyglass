@@ -2,10 +2,14 @@ package me.tim_m.what_spyglass.mixin;
 
 import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.gui.hud.SubtitlesHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.util.ActionResult;
 import me.tim_m.what_spyglass.SpyglassStopCallback;
 import org.spongepowered.asm.mixin.Final;
@@ -21,86 +25,86 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;render(Lnet/minecraft/client/util/math/MatrixStack;ILnet/minecraft/scoreboard/Scoreboard;Lnet/minecraft/scoreboard/ScoreboardObjective;)V"))
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;render(Lnet/minecraft/client/gui/DrawContext;ILnet/minecraft/scoreboard/Scoreboard;Lnet/minecraft/scoreboard/ScoreboardObjective;)V"))
     void stopPlayerListRender(
             net.minecraft.client.gui.hud.PlayerListHud playerListHud,
-            MatrixStack matrices,
+            DrawContext context,
             int scaledWidth,
-            net.minecraft.scoreboard.Scoreboard scoreboard,
-            net.minecraft.scoreboard.ScoreboardObjective objective)
+            Scoreboard scoreboard,
+            ScoreboardObjective objective)
     {
         if (!WhatSpyglassClient.inSpyglass) {
-            playerListHud.render(matrices, scaledWidth, scoreboard, objective);
+            playerListHud.render(context, scaledWidth, scoreboard, objective);
         }
     }
     @Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
-    void stopScoreboardSidebarRender(MatrixStack matrices, net.minecraft.scoreboard.ScoreboardObjective objective, CallbackInfo info)
+    void stopScoreboardSidebarRender(DrawContext context, ScoreboardObjective objective, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
-    void stopStatusEffectOverlayRender(MatrixStack matrices, CallbackInfo info)
+    void stopStatusEffectOverlayRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/BossBarHud;render(Lnet/minecraft/client/util/math/MatrixStack;)V"))
-    void stopBossBarRender(net.minecraft.client.gui.hud.BossBarHud bossBarHud, MatrixStack matrices)
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/BossBarHud;render(Lnet/minecraft/client/gui/DrawContext;)V"))
+    void stopBossBarRender(net.minecraft.client.gui.hud.BossBarHud bossBarHud, DrawContext context)
     {
         if (!WhatSpyglassClient.inSpyglass) {
-            bossBarHud.render(matrices);
+            bossBarHud.render(context);
         }
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;render(Lnet/minecraft/client/util/math/MatrixStack;)V"))
-    void stopSubtitlesRender(net.minecraft.client.gui.hud.SubtitlesHud subtitlesHud, MatrixStack matrices)
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;render(Lnet/minecraft/client/gui/DrawContext;)V"))
+    void stopSubtitlesRender(SubtitlesHud subtitlesHud, DrawContext context)
     {
         if (!WhatSpyglassClient.inSpyglass) {
-            subtitlesHud.render(matrices);
+            subtitlesHud.render(context);
         }
     }
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
-    void stopStatusBarsRender(MatrixStack matrices, CallbackInfo info)
+    void stopStatusBarsRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(Lnet/minecraft/client/util/math/MatrixStack;III)V"))
-    void stopChatRender(ChatHud chatHud, MatrixStack matrices, int currentTick, int mouseX, int mouseY)
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(Lnet/minecraft/client/gui/DrawContext;III)V"))
+    void stopChatRender(ChatHud chatHud, DrawContext context, int currentTick, int mouseX, int mouseY)
     {
         if (!WhatSpyglassClient.inSpyglass) {
-            chatHud.render(matrices, currentTick, mouseX, mouseY);
+            chatHud.render(context, currentTick, mouseX, mouseY);
         }
     }
 
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
-    void stopHeldItemTooltipRender(MatrixStack matrices, CallbackInfo info)
+    void stopHeldItemTooltipRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    void stopExperienceBarRender(MatrixStack matrices, int x, CallbackInfo info)
+    void stopExperienceBarRender(DrawContext context, int x, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
-    void stopMountHealthRender(MatrixStack matrices, CallbackInfo info)
+    void stopMountHealthRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderHealthBar", at = @At("HEAD"), cancellable = true)
-    void stopHealthBarRender(MatrixStack matrices, PlayerEntity player,
+    void stopHealthBarRender(DrawContext context, PlayerEntity player,
          int x, int y, int lines, int regeneratingHeartIndex,
          float maxHealth, int lastHealth, int health, int absorption,
          boolean blinking, CallbackInfo info)
@@ -110,14 +114,14 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
-    void stopHotbarRender(float tickDelta, MatrixStack matrices, CallbackInfo info)
+    void stopHotbarRender(float tickDelta, DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    void stopCrosshairRender(MatrixStack matrices, CallbackInfo info)
+    void stopCrosshairRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -130,7 +134,7 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
-    void checkIfStoppedUsingSpyglass(MatrixStack matrices, float tickDelta, CallbackInfo info)
+    void checkIfStoppedUsingSpyglass(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (client.player != null) {
             if (!client.player.isUsingSpyglass() && WhatSpyglassClient.inSpyglass) {
