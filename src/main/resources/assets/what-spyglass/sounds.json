@@ -1,0 +1,10 @@
+{
+  "what": {
+    "sounds": [
+      {
+        "name":"what-spyglass:song",
+        "preload": true
+      }
+    ]
+  }
+}

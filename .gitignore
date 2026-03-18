@@ -1,0 +1,23 @@
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# Gradle
+.gradle/
+build/
+
+# Python (you have this)
+.venv/
+
+# Minecraft / local server
+run/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Helper script unnecessary in repo
+api_update.py
