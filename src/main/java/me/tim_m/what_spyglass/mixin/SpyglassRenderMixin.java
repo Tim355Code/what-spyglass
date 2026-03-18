@@ -2,6 +2,7 @@ package me.tim_m.what_spyglass.mixin;
 
 import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
@@ -69,11 +70,11 @@ public class SpyglassRenderMixin {
             info.cancel();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(Lnet/minecraft/client/util/math/MatrixStack;I)V"))
-    void stopChatRender(net.minecraft.client.gui.hud.ChatHud chatHud, MatrixStack matrices, int ticks)
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(Lnet/minecraft/client/util/math/MatrixStack;III)V"))
+    void stopChatRender(ChatHud chatHud, MatrixStack matrices, int currentTick, int mouseX, int mouseY)
     {
         if (!WhatSpyglassClient.inSpyglass) {
-            chatHud.render(matrices, ticks);
+            chatHud.render(matrices, currentTick, mouseX, mouseY);
         }
     }
 
