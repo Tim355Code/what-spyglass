@@ -3,12 +3,8 @@ package me.tim_m.what_spyglass;
 import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
 
 // Client-only
 public class WhatSpyglassClient implements ClientModInitializer
