@@ -19,26 +19,26 @@ public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
-    void stopHotbarRender(float tickDelta, DrawContext context, CallbackInfo info)
+    void stopHotbarRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    void stopCrosshairRender(DrawContext context, CallbackInfo info)
+    void stopCrosshairRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @ModifyArg(method = "render", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
+    @ModifyArg(method = "renderMiscOverlays", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     float stopOverlayAnimation(float delta)
     {
         return 1;
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
+    @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
     void checkIfStoppedUsingSpyglass(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (client.player != null) {
