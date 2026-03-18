@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InGameHud.class)
 public class SpyglassRenderMixin {
@@ -76,11 +77,12 @@ public class SpyglassRenderMixin {
             info.cancel();
     }
 
-    @Inject(method = "renderExperienceBar", at = @At("HEAD"), cancellable = true)
-    void stopExperienceBarRender(DrawContext context, int x, CallbackInfo info)
+    @Inject(method = "renderMainHud", at = @At("HEAD"), cancellable = true)
+    private void stopMainHudRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
-        if (WhatSpyglassClient.inSpyglass)
+        if (WhatSpyglassClient.inSpyglass) {
             info.cancel();
+        }
     }
 
     @Inject(method = "renderMountHealth", at = @At("HEAD"), cancellable = true)
