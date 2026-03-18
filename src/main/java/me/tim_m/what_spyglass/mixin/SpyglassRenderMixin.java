@@ -4,6 +4,7 @@ import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.util.ActionResult;
@@ -21,7 +22,7 @@ public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method = "renderPlayerList*", at = @At("HEAD"), cancellable = true)
-    void stopPlayerListRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopPlayerListRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -34,21 +35,21 @@ public class SpyglassRenderMixin {
             info.cancel();
     }
     @Inject(method = "renderScoreboardSidebar*", at = @At("HEAD"), cancellable = true)
-    void stopScoreboardSidebarRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopScoreboardSidebarRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
-    void stopStatusEffectOverlayRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopStatusEffectOverlayRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderTitleAndSubtitle", at = @At("HEAD"), cancellable = true)
-    void stopTitleAndSubtitleRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopTitleAndSubtitleRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -62,7 +63,7 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderChat", at = @At("HEAD"), cancellable = true)
-    void stopChatRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopChatRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -100,14 +101,14 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
-    void stopHotbarRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopHotbarRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    void stopCrosshairRender(DrawContext context, float tickDelta, CallbackInfo info)
+    void stopCrosshairRender(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -120,7 +121,7 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
-    void checkIfStoppedUsingSpyglass(DrawContext context, float tickDelta, CallbackInfo info)
+    void checkIfStoppedUsingSpyglass(DrawContext context, RenderTickCounter tickCounter, CallbackInfo info)
     {
         if (client.player != null) {
             if (!client.player.isUsingSpyglass() && WhatSpyglassClient.inSpyglass) {
