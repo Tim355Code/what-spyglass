@@ -2,8 +2,8 @@ package me.tim_m.what_spyglass.mixin;
 
 import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.ActionResult;
 import me.tim_m.what_spyglass.SpyglassStopCallback;
 import org.spongepowered.asm.mixin.Final;
@@ -19,14 +19,14 @@ public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
-    void stopHotbarRender(float tickDelta, MatrixStack matrices, CallbackInfo info)
+    void stopHotbarRender(float tickDelta, DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    void stopCrosshairRender(MatrixStack matrices, CallbackInfo info)
+    void stopCrosshairRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
@@ -39,7 +39,7 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
-    void checkIfStoppedUsingSpyglass(MatrixStack matrices, float tickDelta, CallbackInfo info)
+    void checkIfStoppedUsingSpyglass(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (client.player != null) {
             if (!client.player.isUsingSpyglass() && WhatSpyglassClient.inSpyglass) {
@@ -52,7 +52,7 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
-    void stopItemTooltipRender(MatrixStack matrices, CallbackInfo info)
+    void stopItemTooltipRender(DrawContext context, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
