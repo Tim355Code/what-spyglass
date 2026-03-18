@@ -24,46 +24,38 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/PlayerListHud;render(Lnet/minecraft/client/gui/DrawContext;ILnet/minecraft/scoreboard/Scoreboard;Lnet/minecraft/scoreboard/ScoreboardObjective;)V"))
-    void stopPlayerListRender(
-            net.minecraft.client.gui.hud.PlayerListHud playerListHud,
-            DrawContext context,
-            int scaledWidth,
-            Scoreboard scoreboard,
-            ScoreboardObjective objective)
+    @Inject(method = "renderPlayerList*", at = @At("HEAD"), cancellable = true)
+    void stopPlayerListRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
-        if (!WhatSpyglassClient.inSpyglass) {
-            playerListHud.render(context, scaledWidth, scoreboard, objective);
-        }
+        if (WhatSpyglassClient.inSpyglass)
+            info.cancel();
     }
-    @Inject(method = "renderScoreboardSidebar", at = @At("HEAD"), cancellable = true)
+
+    @Inject(method = "renderScoreboardSidebar*", at = @At("HEAD"), cancellable = true)
     void stopScoreboardSidebarRender(DrawContext context, ScoreboardObjective objective, CallbackInfo info)
+    {
+        if (WhatSpyglassClient.inSpyglass)
+            info.cancel();
+    }
+    @Inject(method = "renderScoreboardSidebar*", at = @At("HEAD"), cancellable = true)
+    void stopScoreboardSidebarRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
-    void stopStatusEffectOverlayRender(DrawContext context, CallbackInfo info)
+    void stopStatusEffectOverlayRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/BossBarHud;render(Lnet/minecraft/client/gui/DrawContext;)V"))
-    void stopBossBarRender(net.minecraft.client.gui.hud.BossBarHud bossBarHud, DrawContext context)
+    @Inject(method = "renderTitleAndSubtitle", at = @At("HEAD"), cancellable = true)
+    void stopTitleAndSubtitleRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
-        if (!WhatSpyglassClient.inSpyglass) {
-            bossBarHud.render(context);
-        }
-    }
-
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;render(Lnet/minecraft/client/gui/DrawContext;)V"))
-    void stopSubtitlesRender(SubtitlesHud subtitlesHud, DrawContext context)
-    {
-        if (!WhatSpyglassClient.inSpyglass) {
-            subtitlesHud.render(context);
-        }
+        if (WhatSpyglassClient.inSpyglass)
+            info.cancel();
     }
 
     @Inject(method = "renderStatusBars", at = @At("HEAD"), cancellable = true)
@@ -73,12 +65,11 @@ public class SpyglassRenderMixin {
             info.cancel();
     }
 
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;render(Lnet/minecraft/client/gui/DrawContext;III)V"))
-    void stopChatRender(ChatHud chatHud, DrawContext context, int currentTick, int mouseX, int mouseY)
+    @Inject(method = "renderChat", at = @At("HEAD"), cancellable = true)
+    void stopChatRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
-        if (!WhatSpyglassClient.inSpyglass) {
-            chatHud.render(context, currentTick, mouseX, mouseY);
-        }
+        if (WhatSpyglassClient.inSpyglass)
+            info.cancel();
     }
 
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
@@ -113,26 +104,26 @@ public class SpyglassRenderMixin {
     }
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
-    void stopHotbarRender(float tickDelta, DrawContext context, CallbackInfo info)
+    void stopHotbarRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
-    void stopCrosshairRender(DrawContext context, CallbackInfo info)
+    void stopCrosshairRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @ModifyArg(method = "render", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
+    @ModifyArg(method = "renderMiscOverlays", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
     float stopOverlayAnimation(float delta)
     {
         return 1;
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
+    @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingSpyglass()Z"), cancellable = true)
     void checkIfStoppedUsingSpyglass(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (client.player != null) {

@@ -6,7 +6,8 @@
 		"SpyglassUseMixin",
 		"SpyglassStopMixin",
 		"SpyglassRenderMixin",
-		"FovRenderMixin"
+		"FovRenderMixin",
+		"BossBarHudMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
