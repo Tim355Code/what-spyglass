@@ -2,7 +2,6 @@ package me.tim_m.what_spyglass.mixin;
 
 import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.render.GameRenderer;
-import me.tim_m.what_spyglass.WhatSpyglass;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

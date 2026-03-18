@@ -8,7 +8,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public interface SpyglassUseCallback {
-    public static final Event<SpyglassUseCallback> EVENT = EventFactory.createArrayBacked(SpyglassUseCallback.class ,
+    Event<SpyglassUseCallback> EVENT = EventFactory.createArrayBacked(SpyglassUseCallback.class ,
             listeners -> (world, player, hand) -> {
             for (SpyglassUseCallback event : listeners)
             {

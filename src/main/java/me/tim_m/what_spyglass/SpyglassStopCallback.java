@@ -6,7 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ActionResult;
 
 public interface SpyglassStopCallback {
-    public static final Event<SpyglassStopCallback> EVENT = EventFactory.createArrayBacked(SpyglassStopCallback.class ,
+    Event<SpyglassStopCallback> EVENT = EventFactory.createArrayBacked(SpyglassStopCallback.class ,
             listeners -> (LivingEntity user) -> {
                 for (SpyglassStopCallback event : listeners)
                 {
