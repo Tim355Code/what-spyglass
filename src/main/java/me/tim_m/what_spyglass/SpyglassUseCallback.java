@@ -8,17 +8,18 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public interface SpyglassUseCallback {
-    Event<SpyglassUseCallback> EVENT = EventFactory.createArrayBacked(SpyglassUseCallback.class ,
+    Event<SpyglassUseCallback> EVENT = EventFactory.createArrayBacked(
+            SpyglassUseCallback.class,
             listeners -> (world, player, hand) -> {
-            for (SpyglassUseCallback event : listeners)
-            {
-                ActionResult result = event.interact(world, player, hand);
-                if (result != ActionResult.PASS)
-                    return result;
+                for (SpyglassUseCallback listener : listeners) {
+                    ActionResult result = listener.interact(world, player, hand);
+                    if (result != ActionResult.PASS) {
+                        return result;
+                    }
+                }
+                return ActionResult.PASS;
             }
-
-            return ActionResult.PASS;
-    });
+    );
 
     ActionResult interact(World world, PlayerEntity player, Hand hand);
 }

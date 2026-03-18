@@ -17,6 +17,5 @@ public interface SpyglassStopCallback {
 
                 return ActionResult.PASS;
             });
-
     ActionResult interact(LivingEntity user);
 }
