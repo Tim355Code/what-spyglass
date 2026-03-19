@@ -1,7 +1,11 @@
 # WhatSpyglass
-A small Fabric mod that replaces the vanilla spyglass experience with the WHAT meme template.
+*A small Fabric mod that replaces the vanilla spyglass experience with the WHAT meme template.*
 
-This mod shows the WHAT meme template, plays the full EarthBound "Guardian Battle" theme, and hides parts of the HUD while zoomed in.
+This mod shows the WHAT meme template, plays the full EarthBound "Guardian Battle" theme, and hides parts of the HUD while zoomed in. It delivers the meme in a cleaner format compared to that of a resource pack.
+
+## Disclaimer
+The included audio is not owned by me and is property of its respective owners.
+It is included for parody/fan purposes. If requested, it will be removed.
 
 ## Supported versions
 This project is structured with separate branches for different Minecraft versions instead of a single multi-version setup.
