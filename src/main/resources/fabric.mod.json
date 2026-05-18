@@ -22,7 +22,7 @@
 		"what-spyglass.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.18.4",
+		"fabricloader": ">=0.19.2",
 		"minecraft": "1.21.1",
 		"java": ">=17",
 		"fabric": ">=0.116.6"
