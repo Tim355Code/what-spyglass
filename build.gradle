@@ -1,7 +1,24 @@
-plugins {
-    id 'fabric-loom' version '1.15-SNAPSHOT'
-    id 'maven-publish'
+buildscript {
+    repositories {
+        maven { url = "https://maven.fabricmc.net/" }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "net.fabricmc:fabric-loom:${project.loom_version}"
+    }
 }
+
+def isModernMinecraft = project.minecraft_version.startsWith("26.")
+
+if (isModernMinecraft) {
+    apply plugin: "net.fabricmc.fabric-loom"
+} else {
+    apply plugin: "fabric-loom"
+}
+
+apply plugin: "maven-publish"
 
 version = project.mod_version
 group = project.maven_group
@@ -44,7 +61,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = project.java_version.toInteger()
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
@@ -67,9 +84,9 @@ java {
     withSourcesJar()
 }
 
-tasks.named("remapJar") {
-    archiveBaseName.set(archives_base_name)
-    archiveVersion.set("${fabric_version}-${mod_version}")
+tasks.matching { it.name == "remapJar" || it.name == "jar" }.configureEach {
+    archiveBaseName.set(project.archives_base_name)
+    archiveVersion.set("${project.fabric_version}-${project.mod_version}")
 }
 
 jar {
