@@ -2,20 +2,20 @@ package me.tim_m.what_spyglass;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface SpyglassStopCallback {
     Event<SpyglassStopCallback> EVENT = EventFactory.createArrayBacked(SpyglassStopCallback.class ,
-            listeners -> (LivingEntity user) -> {
+            listeners -> (LivingEntity player) -> {
                 for (SpyglassStopCallback event : listeners)
                 {
-                    ActionResult result = event.interact(user);
-                    if (result != ActionResult.PASS)
+                    InteractionResult result = event.interact(player);
+                    if (result != InteractionResult.PASS)
                         return result;
                 }
 
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             });
-    ActionResult interact(LivingEntity user);
+    InteractionResult interact(LivingEntity player);
 }

@@ -2,24 +2,24 @@ package me.tim_m.what_spyglass;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 public interface SpyglassUseCallback {
     Event<SpyglassUseCallback> EVENT = EventFactory.createArrayBacked(
             SpyglassUseCallback.class,
-            listeners -> (world, player, hand) -> {
+            listeners -> (world, level, hand) -> {
                 for (SpyglassUseCallback listener : listeners) {
-                    ActionResult result = listener.interact(world, player, hand);
-                    if (result != ActionResult.PASS) {
+                    InteractionResult result = listener.interact(world, level, hand);
+                    if (result != InteractionResult.PASS) {
                         return result;
                     }
                 }
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
     );
 
-    ActionResult interact(World world, PlayerEntity player, Hand hand);
+    InteractionResult interact(Level level, Player player, InteractionHand hand);
 }

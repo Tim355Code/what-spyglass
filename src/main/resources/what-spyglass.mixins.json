@@ -5,10 +5,7 @@
 	"mixins": [
 		"SpyglassUseMixin",
 		"SpyglassStopMixin",
-		"SpyglassRenderMixin",
-		"FovRenderMixin",
-		"BossBarHudMixin",
-		"SubtitlesHudMixin"
+		"SpyglassRenderMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

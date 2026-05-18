@@ -1,40 +1,47 @@
 package me.tim_m.what_spyglass;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.ActionResult;
-
-// Client-only
 public class WhatSpyglassClient implements ClientModInitializer {
 	public static boolean inSpyglass = false;
 
 	@Override
 	public void onInitializeClient() {
-		SpyglassUseCallback.EVENT.register((world, player, hand) -> {
-			MinecraftClient client = MinecraftClient.getInstance();
-			if (player != client.player) return ActionResult.PASS;
+		SpyglassUseCallback.EVENT.register((level, player, _) -> {
+			Minecraft client = Minecraft.getInstance();
+
+			if (player != client.player) {
+				return InteractionResult.PASS;
+			}
 
 			if (!inSpyglass) {
 				inSpyglass = true;
-				client.getMusicTracker().stop();
-				client.getSoundManager().stopSounds(WhatSpyglass.MUSIC_ID, SoundCategory.PLAYERS);
-				world.playSound(player, player.getBlockPos(), WhatSpyglass.MUSIC_EVENT,
-						SoundCategory.PLAYERS, 1.0f, 1.0f);
+
+				client.getMusicManager().stopPlaying();
+				client.getSoundManager().stop(WhatSpyglass.MUSIC_ID, SoundSource.PLAYERS);
+
+				level.playSound(player, player.blockPosition(), WhatSpyglass.MUSIC_EVENT, SoundSource.PLAYERS, 1.0F, 1.0F);
 			}
-			return ActionResult.SUCCESS;
+
+			return InteractionResult.SUCCESS;
 		});
 
-		SpyglassStopCallback.EVENT.register(user -> {
-			MinecraftClient client = MinecraftClient.getInstance();
-			if (user != client.player) return ActionResult.PASS;
+		SpyglassStopCallback.EVENT.register(player -> {
+			Minecraft client = Minecraft.getInstance();
+
+			if (player != client.player) {
+				return InteractionResult.PASS;
+			}
 
 			if (inSpyglass) {
 				inSpyglass = false;
-				client.getSoundManager().stopSounds(WhatSpyglass.MUSIC_ID, SoundCategory.PLAYERS);
+				client.getSoundManager().stop(WhatSpyglass.MUSIC_ID, SoundSource.PLAYERS);
 			}
-			return ActionResult.SUCCESS;
+
+			return InteractionResult.SUCCESS;
 		});
 	}
 }
