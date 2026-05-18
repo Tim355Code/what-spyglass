@@ -1,7 +1,24 @@
-plugins {
-    id 'net.fabricmc.fabric-loom' version "${loom_version}"
-    id 'maven-publish'
+buildscript {
+    repositories {
+        maven { url = "https://maven.fabricmc.net/" }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "net.fabricmc:fabric-loom:${project.loom_version}"
+    }
 }
+
+def isModernMinecraft = project.minecraft_version.startsWith("26.")
+
+if (isModernMinecraft) {
+    apply plugin: "net.fabricmc.fabric-loom"
+} else {
+    apply plugin: "fabric-loom"
+}
+
+apply plugin: "maven-publish"
 
 version = project.mod_version
 group = project.maven_group
