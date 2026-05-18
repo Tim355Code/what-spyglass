@@ -20,20 +20,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SpyglassRenderMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "renderPlayerList*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderPlayerList", at = @At("HEAD"), cancellable = true)
     void stopPlayerListRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
 
-    @Inject(method = "renderScoreboardSidebar*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"), cancellable = true)
     void stopScoreboardSidebarRender(DrawContext context, ScoreboardObjective objective, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
             info.cancel();
     }
-    @Inject(method = "renderScoreboardSidebar*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;F)V", at = @At("HEAD"), cancellable = true)
     void stopScoreboardSidebarRender(DrawContext context, float tickDelta, CallbackInfo info)
     {
         if (WhatSpyglassClient.inSpyglass)
