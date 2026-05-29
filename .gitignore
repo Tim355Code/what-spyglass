@@ -8,6 +8,7 @@ out/
 build/
 
 # Python (you have this)
+## hello yes ok i admit it this .gitignore is ai generated fight me
 .venv/
 
 # Minecraft / local server
