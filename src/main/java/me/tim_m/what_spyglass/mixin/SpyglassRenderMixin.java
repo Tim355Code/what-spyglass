@@ -2,9 +2,9 @@ package me.tim_m.what_spyglass.mixin;
 
 import me.tim_m.what_spyglass.WhatSpyglassClient;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.world.InteractionResult;
 import me.tim_m.what_spyglass.SpyglassStopCallback;
 import org.spongepowered.asm.mixin.Final;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Gui.class)
+@Mixin(Hud.class)
 public class SpyglassRenderMixin {
     @Shadow @Final private Minecraft minecraft;
 
