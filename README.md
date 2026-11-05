@@ -10,11 +10,11 @@ It is included for parody/fan purposes. If requested, it will be removed.
 ## Supported versions
 This project is structured with separate branches for different Minecraft versions instead of a single multi-version setup.
 
-Currently required fabric loader version: 0.19.2.
+Currently required fabric loader version: 0.19.3.
 - Latest development is always on the ```main``` branch.
-  - Currently: **26.1 - 26.1.2**
+  - Currently: **26.2 - 26.3**
 - Older versions are available under the ```archive/``` branches
-  - Archive branches Include: **1.19 - 1.21.11**
+  - Archive branches Include: **1.19 - 26.1.2**
 
 Bug fixes may be applied across multiple branches where relevant.
 
